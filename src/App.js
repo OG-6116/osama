@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar.js';
+import SimulatorPage from './pages/SimulatorPage.js';
+import ComparisonPage from './pages/ComparisonPage.js';
+import GuidePage from './pages/GuidePage.js';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="app-container">
+        <Navbar />
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<SimulatorPage />} />
+            <Route path="/simulator" element={<Navigate to="/" replace />} />
+            <Route path="/compare" element={<ComparisonPage />} />
+            <Route path="/guide" element={<GuidePage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+        <footer style={{
+          borderTop: '1px solid var(--border-color)',
+          padding: '20px',
+          textAlign: 'center',
+          color: 'var(--text-dim)',
+          fontSize: '0.8rem',
+          backgroundColor: 'rgba(11, 15, 25, 0.6)',
+        }}>
+          OS Process Scheduling Animated Simulator • Built with React & React Router DOM
+        </footer>
+      </div>
+    </BrowserRouter>
   );
 }
 
