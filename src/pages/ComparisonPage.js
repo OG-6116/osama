@@ -1,17 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { runAllAlgorithms } from '../algorithms/index.js';
-import { PRESETS, ALGORITHMS } from '../utils/constants.js';
+import { PRESETS } from '../utils/constants.js';
 import { getProcessColor, IDLE_COLOR } from '../utils/colors.js';
 import {
   BarChart3,
   Trophy,
-  Sliders,
-  CheckCircle,
   Shuffle,
-  RotateCcw,
-  Clock,
-  Layers,
-  ArrowRight
+  Layers
 } from 'lucide-react';
 
 export default function ComparisonPage() {

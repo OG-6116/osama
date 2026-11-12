@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { ALGORITHMS, PRESETS } from '../utils/constants.js';
 import { getProcessColor } from '../utils/colors.js';
-import { Plus, Trash2, Shuffle, RotateCcw, Play, Sliders } from 'lucide-react';
+import { Plus, Trash2, Shuffle, RotateCcw, Play, Sliders, Download, Upload } from 'lucide-react';
 
 export default function ProcessInputForm({
   processes,
@@ -104,6 +104,45 @@ export default function ProcessInputForm({
       { id: 'P1', arrivalTime: 0, burstTime: 4, priority: 1 },
       { id: 'P2', arrivalTime: 1, burstTime: 3, priority: 2 },
     ]);
+  };
+
+  const fileInputRef = useRef(null);
+
+  const handleExportJSON = () => {
+    const data = JSON.stringify(processes, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `workload-${selectedAlgorithm}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleFileImport = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const parsed = JSON.parse(event.target.result);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const validated = parsed.map((p, idx) => ({
+            id: p.id ? String(p.id) : `P${idx + 1}`,
+            arrivalTime: Math.max(0, parseInt(p.arrivalTime, 10) || 0),
+            burstTime: Math.max(1, parseInt(p.burstTime, 10) || 1),
+            priority: Math.max(1, parseInt(p.priority, 10) || 1),
+          }));
+          setProcesses(validated);
+        } else {
+          alert('Invalid format: Expected a JSON array of process objects.');
+        }
+      } catch (err) {
+        alert('Could not parse JSON file: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
   };
 
   const currentAlgoMeta = Object.values(ALGORITHMS).find((a) => a.id === selectedAlgorithm) || ALGORITHMS.FCFS;
@@ -299,6 +338,35 @@ export default function ProcessInputForm({
               <RotateCcw size={14} />
               <span>Reset</span>
             </button>
+
+            <button
+              type="button"
+              onClick={handleExportJSON}
+              className="btn btn-secondary"
+              title="Export current processes as JSON"
+              style={{ padding: '7px 12px', fontSize: '0.8rem' }}
+            >
+              <Download size={14} />
+              <span>Export</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current && fileInputRef.current.click()}
+              className="btn btn-secondary"
+              title="Import processes from JSON file"
+              style={{ padding: '7px 12px', fontSize: '0.8rem' }}
+            >
+              <Upload size={14} />
+              <span>Import</span>
+            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileImport}
+              accept=".json"
+              style={{ display: 'none' }}
+            />
 
             <button
               type="button"

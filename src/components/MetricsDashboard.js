@@ -8,12 +8,18 @@ import {
   Copy,
   Check,
   TrendingUp,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Printer,
+  Calculator,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 
 export default function MetricsDashboard({ simulationResult, currentTime }) {
   const { summary, processStats, timelineSteps } = simulationResult;
   const [copied, setCopied] = useState(false);
+  const [showCalculations, setShowCalculations] = useState(false);
+  const [selectedProcessId, setSelectedProcessId] = useState(processStats[0]?.id || null);
 
   const step = (timelineSteps && timelineSteps[currentTime]) || {};
   const processStates = step.processStates || {};
@@ -38,6 +44,12 @@ export default function MetricsDashboard({ simulationResult, currentTime }) {
       setTimeout(() => setCopied(false), 2000);
     });
   };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  const selectedProc = processStats.find((p) => p.id === selectedProcessId) || processStats[0];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
@@ -187,19 +199,48 @@ export default function MetricsDashboard({ simulationResult, currentTime }) {
               <span>Detailed Process Performance Table</span>
             </div>
             <div className="section-subtitle">
-              Calculated completion, turnaround, waiting, and response metrics per process
+              Calculated completion, turnaround, waiting, and response metrics per process (click any row to view step-by-step substitution)
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleCopyCSV}
-            className="btn btn-secondary"
-            style={{ fontSize: '0.8rem', padding: '6px 12px' }}
-          >
-            {copied ? <Check size={14} color="#10B981" /> : <Copy size={14} />}
-            <span>{copied ? 'Copied to Clipboard' : 'Copy as CSV'}</span>
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              onClick={() => setShowCalculations(!showCalculations)}
+              className="btn btn-secondary"
+              style={{
+                fontSize: '0.8rem',
+                padding: '6px 12px',
+                borderColor: showCalculations ? '#3B82F6' : undefined,
+                color: showCalculations ? '#60A5FA' : undefined,
+              }}
+            >
+              <Calculator size={14} />
+              <span>{showCalculations ? 'Hide Formulas' : 'Show Formula Steps'}</span>
+              {showCalculations ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleCopyCSV}
+              className="btn btn-secondary"
+              style={{ fontSize: '0.8rem', padding: '6px 12px' }}
+            >
+              {copied ? <Check size={14} color="#10B981" /> : <Copy size={14} />}
+              <span>{copied ? 'Copied to Clipboard' : 'Copy CSV'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="btn btn-secondary print-button"
+              style={{ fontSize: '0.8rem', padding: '6px 12px' }}
+              title="Print Lab Report or Save as PDF"
+            >
+              <Printer size={14} />
+              <span>Print Report</span>
+            </button>
+          </div>
         </div>
 
         <div style={{ overflowX: 'auto', marginTop: 12 }}>
@@ -228,8 +269,8 @@ export default function MetricsDashboard({ simulationResult, currentTime }) {
                 const color = getProcessColor(p.id);
                 const pState = processStates[p.id];
                 const status = pState ? pState.status : 'not_arrived';
+                const isSelected = selectedProcessId === p.id;
 
-                // Status pill badge styles
                 let statusBadgeBg = 'rgba(100, 116, 139, 0.2)';
                 let statusColor = '#94A3B8';
                 let statusLabel = 'Not Arrived';
@@ -251,11 +292,21 @@ export default function MetricsDashboard({ simulationResult, currentTime }) {
                 return (
                   <tr
                     key={p.id}
+                    onClick={() => {
+                      setSelectedProcessId(p.id);
+                      setShowCalculations(true);
+                    }}
                     style={{
                       borderBottom: '1px solid rgba(255, 255, 255, 0.04)',
-                      transition: 'background-color 0.15s ease',
-                      backgroundColor: status === 'running' ? 'rgba(59, 130, 246, 0.06)' : 'transparent',
+                      transition: 'all 0.15s ease',
+                      backgroundColor: isSelected
+                        ? 'rgba(59, 130, 246, 0.12)'
+                        : status === 'running'
+                        ? 'rgba(59, 130, 246, 0.06)'
+                        : 'transparent',
+                      cursor: 'pointer',
                     }}
+                    title="Click to view detailed formula calculations"
                   >
                     <td style={{ padding: '10px 12px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -340,6 +391,143 @@ export default function MetricsDashboard({ simulationResult, currentTime }) {
             </tfoot>
           </table>
         </div>
+
+        {/* 3. Interactive Formula Calculation Breakdown */}
+        {showCalculations && selectedProc && (
+          <div style={{
+            marginTop: 20,
+            padding: 18,
+            borderRadius: 12,
+            backgroundColor: 'rgba(0, 0, 0, 0.35)',
+            border: '1px solid rgba(59, 130, 246, 0.35)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <Calculator size={18} color="#60A5FA" />
+                <span style={{ fontWeight: 700, fontSize: '0.95rem', color: '#FFFFFF' }}>
+                  Step-by-Step Mathematical Calculation Breakdown
+                </span>
+              </div>
+
+              {/* Process Selector Pills */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Select Process:</span>
+                {processStats.map((p) => {
+                  const isCur = selectedProc.id === p.id;
+                  const color = getProcessColor(p.id);
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => setSelectedProcessId(p.id)}
+                      style={{
+                        padding: '3px 8px',
+                        borderRadius: 6,
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        backgroundColor: isCur ? color.bg : 'rgba(255, 255, 255, 0.05)',
+                        color: isCur ? '#FFF' : 'var(--text-muted)',
+                        border: isCur ? '1px solid rgba(255, 255, 255, 0.3)' : '1px solid var(--border-color)',
+                      }}
+                    >
+                      {p.id}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Calculations Grid for Selected Process */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: 14,
+            }}>
+              {/* Turnaround Time Calculation */}
+              <div style={{
+                background: 'rgba(139, 92, 246, 0.08)',
+                border: '1px solid rgba(139, 92, 246, 0.25)',
+                borderRadius: 8,
+                padding: 12,
+              }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#C4B5FD', marginBottom: 4 }}>
+                  Turnaround Time (TAT) for {selectedProc.id}
+                </div>
+                <div style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: 2 }}>
+                  TAT = Completion Time (CT) − Arrival Time (AT)
+                </div>
+                <div style={{ fontSize: '0.95rem', fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#A78BFA' }}>
+                  TAT = {selectedProc.completionTime} − {selectedProc.arrivalTime} = {selectedProc.turnaroundTime} ms
+                </div>
+              </div>
+
+              {/* Waiting Time Calculation */}
+              <div style={{
+                background: 'rgba(16, 185, 129, 0.08)',
+                border: '1px solid rgba(16, 185, 129, 0.25)',
+                borderRadius: 8,
+                padding: 12,
+              }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#6EE7B7', marginBottom: 4 }}>
+                  Waiting Time (WT) for {selectedProc.id}
+                </div>
+                <div style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: 2 }}>
+                  WT = Turnaround Time (TAT) − Burst Time (BT)
+                </div>
+                <div style={{ fontSize: '0.95rem', fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#34D399' }}>
+                  WT = {selectedProc.turnaroundTime} − {selectedProc.burstTime} = {selectedProc.waitingTime} ms
+                </div>
+              </div>
+
+              {/* Response Time Calculation */}
+              <div style={{
+                background: 'rgba(59, 130, 246, 0.08)',
+                border: '1px solid rgba(59, 130, 246, 0.25)',
+                borderRadius: 8,
+                padding: 12,
+              }}>
+                <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#93C5FD', marginBottom: 4 }}>
+                  Response Time (RT) for {selectedProc.id}
+                </div>
+                <div style={{ fontSize: '0.8rem', fontFamily: 'var(--font-mono)', color: 'var(--text-muted)', marginBottom: 2 }}>
+                  RT = First CPU Dispatched − Arrival Time (AT)
+                </div>
+                <div style={{ fontSize: '0.95rem', fontFamily: 'var(--font-mono)', fontWeight: 800, color: '#60A5FA' }}>
+                  RT = {selectedProc.firstExecutionTime} − {selectedProc.arrivalTime} = {selectedProc.responseTime} ms
+                </div>
+              </div>
+            </div>
+
+            {/* System Averages Step-by-Step */}
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.03)',
+              borderRadius: 8,
+              padding: '12px 14px',
+              border: '1px solid var(--border-color)',
+              fontSize: '0.8rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 6,
+            }}>
+              <span style={{ fontWeight: 700, color: '#FCD34D' }}>System-Wide Workload Summary Equations:</span>
+              <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-main)' }}>
+                Average TAT = ({processStats.map((p) => p.turnaroundTime).join(' + ')}) / {processStats.length} = <strong style={{ color: '#A78BFA' }}>{summary.avgTurnaroundTime} ms</strong>
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-main)' }}>
+                Average WT = ({processStats.map((p) => p.waitingTime).join(' + ')}) / {processStats.length} = <strong style={{ color: '#34D399' }}>{summary.avgWaitingTime} ms</strong>
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-main)' }}>
+                Average RT = ({processStats.map((p) => p.responseTime).join(' + ')}) / {processStats.length} = <strong style={{ color: '#60A5FA' }}>{summary.avgResponseTime} ms</strong>
+              </div>
+              <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-main)' }}>
+                CPU Utilization = (({summary.totalTime} − {summary.totalIdleTime}) / {summary.totalTime}) × 100% = <strong style={{ color: '#FBBF24' }}>{summary.cpuUtilization}%</strong>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

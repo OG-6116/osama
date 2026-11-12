@@ -1,3 +1,4 @@
+import React from 'react';
 import { getProcessColor } from '../utils/colors.js';
 import { Cpu, ListOrdered, CheckCircle2, Terminal, ArrowRight, Zap, Coffee } from 'lucide-react';
 

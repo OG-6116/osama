@@ -1,70 +1,101 @@
-# Getting Started with Create React App
+# OSSim — Interactive CPU Scheduling Algorithm Visualizer & Simulator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A high-performance, animated CPU Scheduling Algorithm Simulator designed for Operating Systems (OS) courses and lab coursework. Built with modern React, React Router, and interactive visualizations.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+### 1. Eight Core Scheduling Algorithms Supported
+- **FCFS** (First-Come, First-Served) — Non-preemptive, FIFO arrival ordering.
+- **SJF** (Shortest Job First) — Non-preemptive, optimal average waiting time.
+- **SRTF** (Shortest Remaining Time First) — Preemptive version of SJF with dynamic preemption.
+- **Round Robin (RR)** — Preemptive time-sharing with configurable time slice ($q$).
+- **Priority Scheduling (Non-Preemptive)** — Configurable priority rules (lower/higher number = higher priority).
+- **Priority Scheduling (Preemptive)** — Instant CPU preemption upon arrival of higher priority processes.
+- **HRRN** (Highest Response Ratio Next) — Non-preemptive aging algorithm balancing waiting time and burst time ($R = \frac{W + S}{S}$).
+- **LJF** (Longest Job First) — Non-preemptive benchmark demonstrating convoy phenomena.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### 2. Animated Gantt Chart
+- **Real-Time Playback**: Play, pause, step forward, step back, and reset controls.
+- **Variable Playback Speed**: 0.5x, 1x, 2x, 4x speed multipliers.
+- **Scrubber Timeline Slider**: Scrub to any exact millisecond ($t$) to inspect CPU state.
+- **Dual Visual Modes**: Single continuous CPU Gantt track, multi-process swimlanes, or both.
+- **Hover Inspection Tooltips**: Instant start/end/duration breakdown on any Gantt block.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 3. CPU Core Socket & Ready Queue Visualizer
+- **Live CPU Core Display**: Active pulsing animations during burst execution and idle sleep state with animated coffee indicators when idle.
+- **Real-Time Ready Queue**: Animated queue chips showing which processes are queued, remaining times, and priority levels.
+- **Completed Processes Tray**: Tracks completed processes and their finish timestamps.
+- **Event Log Stream**: Live terminal-style event feed logging scheduling transitions, preemptions, and quantum expirations.
 
-### `npm test`
+### 4. Metrics Dashboard & Formula Calculations
+- **KPI Summary Cards**: Average Waiting Time (WT), Average Turnaround Time (TAT), Average Response Time (RT), CPU Utilization %, and Context Switch Count.
+- **Detailed Process Table**: Per-process arrival time, burst time, priority, completion time, turnaround time, waiting time, response time, and current lifecycle state.
+- **Step-by-Step Formula Substitution**: Click on any process or toggle formula steps to inspect exact arithmetic substitutions ($TAT = CT - AT$, $WT = TAT - BT$, $RT = First - AT$) and system averages.
+- **Export & Print**: Copy process table as CSV, export/import workload configurations as JSON, and print clean lab reports with printer-friendly styling.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 5. Algorithm Comparison Arena
+- **Side-by-Side Execution**: Run all 8 algorithms simultaneously on identical workloads.
+- **Synchronized Gantt Charts**: Stacked timelines calibrated to a uniform time scale.
+- **Optimal Algorithm Trophy**: Automatically detects and highlights the best-performing algorithm for the selected workload.
+- **Comparison Table & Bar Charts**: Graphical visual bars comparing average waiting times.
 
-### `npm run build`
+### 6. Interactive Theory & Lab Guide
+- Clear definitions, formulas, and textbook references for CPU Scheduling metrics.
+- Analysis of starvation, convoy effect, priority inversion, and aging solutions.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🛠️ Tech Stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Framework**: React 19 (Hooks, Context, Memoization)
+- **Routing**: React Router DOM
+- **Icons**: Lucide React
+- **Styling**: Modern CSS Glassmorphism with custom variables and `@media print` support
+- **Testing**: Jest & React Testing Library (100% passing test suite)
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📦 Getting Started
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Prerequisites
+- Node.js (v18+ recommended)
+- npm or yarn
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Installation
+```bash
+git clone <repo-url>
+cd osama
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Running Locally
+```bash
+npm start
+```
+Runs the app in development mode at `http://localhost:3000`.
 
-## Learn More
+### Running Tests
+```bash
+npm test -- --watchAll=false
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Production Build
+```bash
+npm run build
+```
+Generates production-optimized bundle inside the `build/` directory.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🧪 Preset Scenarios Included
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **Standard Mixed Workload**: Staggered arrivals with balanced bursts.
+- **Convoy Effect Showcase**: Heavy job blocking subsequent short jobs in FCFS vs SJF.
+- **SRTF Preemption Demo**: Classic textbook example demonstrating multiple preemptions.
+- **Round Robin Time-Sharing**: Processes cycling through a fixed time slice ($q = 2$).
+- **Priority Inversion / Hierarchy**: Demonstrates preemption based on process priorities.
+- **CPU Idle Gaps Demo**: Workload with arrival gaps resulting in CPU idle periods.
+- **HRRN Aging Showcase**: Demonstrates how waiting time prevents starvation in long jobs.
+- **LJF vs SJF Workload**: Contrasts Longest Job First with Shortest Job First.
