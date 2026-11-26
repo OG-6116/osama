@@ -5,8 +5,6 @@ import {
   simulateRoundRobin,
   simulatePriorityNonPreemptive,
   simulatePriorityPreemptive,
-  simulateHRRN,
-  simulateLJF,
 } from './index.js';
 
 describe('CPU Scheduling Algorithms', () => {
@@ -64,21 +62,5 @@ describe('CPU Scheduling Algorithms', () => {
     // At t=1, P2 (priority 1) arrives and preempts P1 (priority 2)
     // P2 runs [1, 4), completes at 4
     expect(res.processStats.find(p => p.id === 'P2').completionTime).toBe(4);
-  });
-
-  test('HRRN prioritizes highest response ratio', () => {
-    const res = simulateHRRN(sampleProcesses);
-    // At t=4: P2 ratio=(3+3)/3=2.0; P3 ratio=(2+1)/1=3.0 -> P3 selected first
-    expect(res.processStats.find(p => p.id === 'P1').completionTime).toBe(4);
-    expect(res.processStats.find(p => p.id === 'P3').completionTime).toBe(5);
-    expect(res.processStats.find(p => p.id === 'P2').completionTime).toBe(8);
-  });
-
-  test('LJF selects process with longest burst time', () => {
-    const res = simulateLJF(sampleProcesses);
-    // At t=4: P2 (BT=3) > P3 (BT=1) -> P2 runs first
-    expect(res.processStats.find(p => p.id === 'P1').completionTime).toBe(4);
-    expect(res.processStats.find(p => p.id === 'P2').completionTime).toBe(7);
-    expect(res.processStats.find(p => p.id === 'P3').completionTime).toBe(8);
   });
 });

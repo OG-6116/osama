@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Cpu, BarChart3, BookOpen, Layers } from 'lucide-react';
+import { Cpu, BookOpen, Layers } from 'lucide-react';
 
 export default function Navbar() {
   return (
@@ -38,7 +38,7 @@ export default function Navbar() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.02em', color: '#FFFFFF' }}>
-                OS<span style={{ color: '#60A5FA' }}>Sim</span>
+                OSAMA
               </span>
               <span style={{
                 fontSize: '0.65rem',
@@ -81,26 +81,6 @@ export default function Navbar() {
           >
             <Layers size={16} />
             <span>Simulator</span>
-          </NavLink>
-
-          <NavLink
-            to="/compare"
-            style={({ isActive }) => ({
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '8px 14px',
-              borderRadius: 8,
-              fontSize: '0.875rem',
-              fontWeight: 600,
-              color: isActive ? '#FFFFFF' : 'var(--text-muted)',
-              backgroundColor: isActive ? 'rgba(59, 130, 246, 0.15)' : 'transparent',
-              border: isActive ? '1px solid rgba(59, 130, 246, 0.35)' : '1px solid transparent',
-              transition: 'all 0.15s ease',
-            })}
-          >
-            <BarChart3 size={16} />
-            <span>Compare Algorithms</span>
           </NavLink>
 
           <NavLink

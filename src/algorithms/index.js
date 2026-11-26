@@ -4,8 +4,6 @@ import { simulateSRTF } from './srtf.js';
 import { simulateRoundRobin } from './roundRobin.js';
 import { simulatePriorityNonPreemptive } from './priorityNonPreemptive.js';
 import { simulatePriorityPreemptive } from './priorityPreemptive.js';
-import { simulateHRRN } from './hrrn.js';
-import { simulateLJF } from './ljf.js';
 
 export {
   simulateFCFS,
@@ -14,8 +12,6 @@ export {
   simulateRoundRobin,
   simulatePriorityNonPreemptive,
   simulatePriorityPreemptive,
-  simulateHRRN,
-  simulateLJF,
 };
 
 /**
@@ -37,18 +33,13 @@ export function runSimulation(algorithmId, processes, options = {}) {
       return simulatePriorityNonPreemptive(processes, priorityOrder);
     case 'priority_p':
       return simulatePriorityPreemptive(processes, priorityOrder);
-    case 'hrrn':
-      return simulateHRRN(processes);
-    case 'ljf':
-      return simulateLJF(processes);
     default:
       return simulateFCFS(processes);
   }
 }
 
 /**
- * Runs all 8 scheduling algorithms on the same process dataset
- * Used for the Side-by-Side Comparison view
+ * Runs all 6 scheduling algorithms on the same process dataset
  */
 export function runAllAlgorithms(processes, options = {}) {
   const { timeQuantum = 2, priorityOrder = 'lower' } = options;
@@ -60,7 +51,5 @@ export function runAllAlgorithms(processes, options = {}) {
     simulateRoundRobin(processes, timeQuantum),
     simulatePriorityNonPreemptive(processes, priorityOrder),
     simulatePriorityPreemptive(processes, priorityOrder),
-    simulateHRRN(processes),
-    simulateLJF(processes),
   ];
 }

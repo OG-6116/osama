@@ -65,28 +65,6 @@ export const ALGORITHMS = {
     badge: 'Preemptive',
     color: '#06B6D4',
   },
-  HRRN: {
-    id: 'hrrn',
-    name: 'HRRN',
-    fullName: 'Highest Response Ratio Next',
-    type: 'Non-preemptive',
-    description: 'Dynamic scheduling that prevents starvation: selects the process with the highest response ratio (W + S) / S. Long jobs gain priority as their waiting time increases.',
-    requiresTimeQuantum: false,
-    requiresPriority: false,
-    badge: 'Non-Preemptive',
-    color: '#14B8A6',
-  },
-  LJF: {
-    id: 'ljf',
-    name: 'LJF',
-    fullName: 'Longest Job First',
-    type: 'Non-preemptive',
-    description: 'Selects the arrived process with the longest burst time. Non-preemptive. Often analyzed in operating system design to contrast with SJF performance.',
-    requiresTimeQuantum: false,
-    requiresPriority: false,
-    badge: 'Non-Preemptive',
-    color: '#E11D48',
-  },
 };
 
 export const PRESETS = [
@@ -165,33 +143,6 @@ export const PRESETS = [
       { id: 'P1', arrivalTime: 1, burstTime: 3, priority: 1 },
       { id: 'P2', arrivalTime: 6, burstTime: 2, priority: 2 },
       { id: 'P3', arrivalTime: 10, burstTime: 4, priority: 3 },
-    ],
-  },
-  {
-    name: 'HRRN Aging Showcase',
-    description: 'A classic 5-process workload showing how waiting time elevates priority in HRRN',
-    recommendedAlgo: 'hrrn',
-    quantum: 2,
-    priorityOrder: 'lower',
-    processes: [
-      { id: 'P1', arrivalTime: 0, burstTime: 3, priority: 1 },
-      { id: 'P2', arrivalTime: 2, burstTime: 6, priority: 2 },
-      { id: 'P3', arrivalTime: 4, burstTime: 4, priority: 3 },
-      { id: 'P4', arrivalTime: 6, burstTime: 5, priority: 4 },
-      { id: 'P5', arrivalTime: 8, burstTime: 2, priority: 5 },
-    ],
-  },
-  {
-    name: 'LJF vs SJF Workload',
-    description: 'Contrasting workload where long jobs run before short jobs',
-    recommendedAlgo: 'ljf',
-    quantum: 2,
-    priorityOrder: 'lower',
-    processes: [
-      { id: 'P1', arrivalTime: 0, burstTime: 2, priority: 1 },
-      { id: 'P2', arrivalTime: 1, burstTime: 7, priority: 2 },
-      { id: 'P3', arrivalTime: 2, burstTime: 4, priority: 3 },
-      { id: 'P4', arrivalTime: 3, burstTime: 9, priority: 4 },
     ],
   },
 ];

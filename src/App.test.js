@@ -13,10 +13,11 @@ import App from './App.js';
 
 test('renders App and navbar navigation', () => {
   render(<App />);
+  const brand = screen.getByText('OSAMA');
+  expect(brand).toBeInTheDocument();
   const simulatorNav = screen.getByText('Simulator');
   expect(simulatorNav).toBeInTheDocument();
-  const compareNav = screen.getByText('Compare Algorithms');
-  expect(compareNav).toBeInTheDocument();
+  expect(screen.queryByText('Compare Algorithms')).not.toBeInTheDocument();
   const guideNav = screen.getByText('Theory & Guide');
   expect(guideNav).toBeInTheDocument();
 });

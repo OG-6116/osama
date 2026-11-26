@@ -269,48 +269,6 @@ export default function GuidePage() {
               <strong>Starvation & Aging:</strong> Low-priority processes may wait indefinitely if higher-priority processes keep arriving. Modern OSes use "Aging" (gradually increasing a process's priority the longer it waits in queue) to prevent starvation.
             </div>
           </div>
-
-          {/* HRRN */}
-          <div style={{
-            borderLeft: '4px solid #14B8A6',
-            paddingLeft: 16,
-            paddingTop: 4,
-            paddingBottom: 4,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-              <h3 style={{ fontSize: '1.05rem', color: '#FFFFFF' }}>7. Highest Response Ratio Next (HRRN)</h3>
-              <span className="badge badge-non-preemptive">Non-Preemptive</span>
-            </div>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-              A non-preemptive algorithm developed to overcome the starvation problem in SJF. At each scheduling point, it calculates the Response Ratio <code>R = (W + S) / S = 1 + (W / S)</code> (where W is current waiting time and S is service/burst time), and schedules the process with the highest ratio.
-            </p>
-            <div style={{
-              marginTop: 8,
-              fontSize: '0.8rem',
-              color: '#5EEAD4',
-              background: 'rgba(20, 184, 166, 0.1)',
-              padding: '6px 10px',
-              borderRadius: 6,
-            }}>
-              <strong>Built-in Aging:</strong> Short jobs are favored due to smaller denominators (S), but long jobs gradually gain high priority as their waiting time (W) grows, eliminating starvation.
-            </div>
-          </div>
-
-          {/* LJF */}
-          <div style={{
-            borderLeft: '4px solid #E11D48',
-            paddingLeft: 16,
-            paddingTop: 4,
-            paddingBottom: 4,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-              <h3 style={{ fontSize: '1.05rem', color: '#FFFFFF' }}>8. Longest Job First (LJF)</h3>
-              <span className="badge badge-non-preemptive">Non-Preemptive</span>
-            </div>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-              The opposite of SJF: when the CPU is idle, the process with the largest burst time is selected and runs to completion. It provides a valuable theoretical benchmark to analyze worst-case convoy effects and maximum average waiting time.
-            </p>
-          </div>
         </div>
       </div>
     </div>

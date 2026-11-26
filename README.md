@@ -1,4 +1,4 @@
-# OSSim — Interactive CPU Scheduling Algorithm Visualizer & Simulator
+# OSAMA — Interactive CPU Scheduling Algorithm Visualizer & Simulator
 
 A high-performance, animated CPU Scheduling Algorithm Simulator designed for Operating Systems (OS) courses and lab coursework. Built with modern React, React Router, and interactive visualizations.
 
@@ -6,15 +6,13 @@ A high-performance, animated CPU Scheduling Algorithm Simulator designed for Ope
 
 ## 🚀 Features
 
-### 1. Eight Core Scheduling Algorithms Supported
+### 1. Six Core Scheduling Algorithms Supported
 - **FCFS** (First-Come, First-Served) — Non-preemptive, FIFO arrival ordering.
 - **SJF** (Shortest Job First) — Non-preemptive, optimal average waiting time.
 - **SRTF** (Shortest Remaining Time First) — Preemptive version of SJF with dynamic preemption.
 - **Round Robin (RR)** — Preemptive time-sharing with configurable time slice ($q$).
 - **Priority Scheduling (Non-Preemptive)** — Configurable priority rules (lower/higher number = higher priority).
 - **Priority Scheduling (Preemptive)** — Instant CPU preemption upon arrival of higher priority processes.
-- **HRRN** (Highest Response Ratio Next) — Non-preemptive aging algorithm balancing waiting time and burst time ($R = \frac{W + S}{S}$).
-- **LJF** (Longest Job First) — Non-preemptive benchmark demonstrating convoy phenomena.
 
 ### 2. Animated Gantt Chart
 - **Real-Time Playback**: Play, pause, step forward, step back, and reset controls.
@@ -29,19 +27,10 @@ A high-performance, animated CPU Scheduling Algorithm Simulator designed for Ope
 - **Completed Processes Tray**: Tracks completed processes and their finish timestamps.
 - **Event Log Stream**: Live terminal-style event feed logging scheduling transitions, preemptions, and quantum expirations.
 
-### 4. Metrics Dashboard & Formula Calculations
+### 4. Metrics Dashboard
 - **KPI Summary Cards**: Average Waiting Time (WT), Average Turnaround Time (TAT), Average Response Time (RT), CPU Utilization %, and Context Switch Count.
-- **Detailed Process Table**: Per-process arrival time, burst time, priority, completion time, turnaround time, waiting time, response time, and current lifecycle state.
-- **Step-by-Step Formula Substitution**: Click on any process or toggle formula steps to inspect exact arithmetic substitutions ($TAT = CT - AT$, $WT = TAT - BT$, $RT = First - AT$) and system averages.
-- **Export & Print**: Copy process table as CSV, export/import workload configurations as JSON, and print clean lab reports with printer-friendly styling.
 
-### 5. Algorithm Comparison Arena
-- **Side-by-Side Execution**: Run all 8 algorithms simultaneously on identical workloads.
-- **Synchronized Gantt Charts**: Stacked timelines calibrated to a uniform time scale.
-- **Optimal Algorithm Trophy**: Automatically detects and highlights the best-performing algorithm for the selected workload.
-- **Comparison Table & Bar Charts**: Graphical visual bars comparing average waiting times.
-
-### 6. Interactive Theory & Lab Guide
+### 5. Interactive Theory & Lab Guide
 - Clear definitions, formulas, and textbook references for CPU Scheduling metrics.
 - Analysis of starvation, convoy effect, priority inversion, and aging solutions.
 
@@ -97,5 +86,3 @@ Generates production-optimized bundle inside the `build/` directory.
 - **Round Robin Time-Sharing**: Processes cycling through a fixed time slice ($q = 2$).
 - **Priority Inversion / Hierarchy**: Demonstrates preemption based on process priorities.
 - **CPU Idle Gaps Demo**: Workload with arrival gaps resulting in CPU idle periods.
-- **HRRN Aging Showcase**: Demonstrates how waiting time prevents starvation in long jobs.
-- **LJF vs SJF Workload**: Contrasts Longest Job First with Shortest Job First.
