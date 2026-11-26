@@ -75,7 +75,6 @@ export default function SimulatorPage() {
       {/* 4. Performance Metrics Dashboard */}
       <MetricsDashboard
         simulationResult={simulationResult}
-        currentTime={currentTime}
       />
     </div>
   );
